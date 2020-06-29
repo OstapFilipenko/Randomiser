@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
-import 'package:flutter/services.dart';
+import 'Pages/ColorsGen.dart';
+import 'Pages/CountriesGen.dart';
+import 'Pages/DicesGen.dart';
+import 'Pages/NumbsGen.dart';
+import 'Pages/ListsGen.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,22 +32,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _numb = 0;
-  var rng = new Random();
-  final _minValueController = new TextEditingController();
-  final _maxValueController = new TextEditingController();
-  
-  void _randomNumb(var min, var max) {
+  int _currentIndex = 0;
+  final List<Widget> _menuChildren = [
+    NumbersGen(),
+    ColorsGen(),
+    ListsGen(),
+    DicesGen(),
+    CountriesGen()
+  ];
+
+ 
+
+  void onTappedMenu(int index){
     setState(() {
-      _numb = min + rng.nextInt(max - min);
+      _currentIndex = index;
     });
   }
-  @override
-  void dispose() {
-    _minValueController.dispose();
-    _maxValueController.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,55 +56,38 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                new Container(
-                    width: 100,
-                    child: new TextField(  
-                      controller: _minValueController,
-                      decoration: new InputDecoration.collapsed(
-                        hintText: "Min"
-                      ),
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
-                    ),
-                  ),
-                 new Container(
-                    width: 100,
-                    child: new TextField(  
-                      controller: _maxValueController,
-                     decoration: new InputDecoration.collapsed(
-                        hintText: "Max"
-                      ),
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
-                    ),
-                  )
-              ],
-            ),
-
-            new Text(
-              'Your random number is:',
-            ),
-            new Text(
-              '$_numb',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            new RaisedButton(
-              child: const Text("generate"),
-              onPressed: (){
-                _randomNumb(int.parse(_minValueController.text), int.parse(_maxValueController.text)+1);
-              }
-            )
-          ],
-        ),
+      body: _menuChildren[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        iconSize: 30,
+        onTap: onTappedMenu,
+        currentIndex: _currentIndex,
+        
+        items: [
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.plus_one),
+            title: new Text("Number"),
+            backgroundColor: Colors.blue,
+          ),
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.colorize),
+            title: new Text("Color"),
+            backgroundColor: Colors.blue,
+          ),
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            title: new Text("List"),
+          ),
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.tonality),
+            title: new Text("Dice"),
+            backgroundColor: Colors.blue,
+          ),
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.web),
+            title: new Text("Country"),
+            backgroundColor: Colors.blue,
+          )
+        ],
       ),
     );
   }
