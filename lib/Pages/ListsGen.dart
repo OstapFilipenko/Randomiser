@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:randomiser/Models/List_Of_Items.dart';
 import '../TheDB.dart';
@@ -10,6 +12,17 @@ class ListsGen extends StatefulWidget {
 class _ListsGen extends State<ListsGen> {
   final theDb = TheDB.instance;
   List<List_Of_Items> list = new List();
+  @override
+  void initState() {
+    Timer.run(() async{
+        List<List_Of_Items> lol = await theDb.queryGroupBy("name");
+        setState(() {
+          list = lol;
+        });
+    });
+    
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +35,7 @@ class _ListsGen extends State<ListsGen> {
             return Dismissible(
                     key: Key(item.getName()),
                     onDismissed: (direction){
+                      deleteList(item.getName());
                       setState(() {
                         list.removeAt(index);
                       });
@@ -50,4 +64,22 @@ class _ListsGen extends State<ListsGen> {
       ),
     );
   }
+
+
+  void deleteList(String listName) async {
+    final id = await theDb.queryRowCount();
+    final rowsDeleted = await theDb.deleteList(listName);
+    print('deleted $rowsDeleted row(s): row $id');
+  }
+
+  int numberOf(String listName, List<List_Of_Items> lis){
+    int counter = 0;
+    for(List_Of_Items ls in lis){
+      if(ls.getName() == listName){
+        counter++;
+      }
+    }
+    return counter;
+  }
+
 }

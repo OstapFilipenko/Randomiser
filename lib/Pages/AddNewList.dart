@@ -72,8 +72,8 @@ class _AddNewList extends State<AddNewList> {
             new RaisedButton(
               child: new Text("Ready"),
               onPressed: (){
-                _query();
-                //Navigator.pop(context);
+                //_query();
+                Navigator.pop(context);
               },
 
             ),
@@ -109,7 +109,6 @@ class _AddNewList extends State<AddNewList> {
 
 
   void _insert(String clName, String item) async {
-    // row to insert
     Map<String, dynamic> row = {
       TheDB.columnListName: clName,
       TheDB.columnItem: item
@@ -122,12 +121,6 @@ class _AddNewList extends State<AddNewList> {
     final allRows = await theDb.queryAllRows();
     print('query all rows:');
     allRows.forEach((row) => print(row.toString()));
-  }
-
-  void _deleteList(String listName) async {
-    final id = await theDb.queryRowCount();
-    final rowsDeleted = await theDb.deleteList(listName);
-    print('deleted $rowsDeleted row(s): row $id');
   }
 
   void _deleteItem(String itemName, String listName) async {
