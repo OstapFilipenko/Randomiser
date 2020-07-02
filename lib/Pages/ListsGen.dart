@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:randomiser/Helper.dart';
 import 'package:randomiser/Models/List_Of_Items.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../TheDB.dart';
 import 'AddNewList.dart';
 
 class ListsGen extends StatefulWidget {
@@ -9,18 +8,8 @@ class ListsGen extends StatefulWidget {
   _ListsGen createState() => _ListsGen();
 }
 class _ListsGen extends State<ListsGen> {
-  SharedPreferences prefs;
-  static Helper helper = new Helper();
-  List<List_Of_Items> list = helper.getList();
-
-/*
-  Future<bool> _saveList() async {
-    return await prefs.setStringList("key", _rand);
-  }
-  List<String> _getList() {
-    return prefs.getStringList("key");
-  }
-*/
+  final theDb = TheDB.instance;
+  List<List_Of_Items> list = new List();
 
   @override
   Widget build(BuildContext context) {

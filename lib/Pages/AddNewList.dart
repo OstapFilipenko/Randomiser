@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:randomiser/Helper.dart';
 import 'package:randomiser/Models/List_Of_Items.dart';
 import 'package:randomiser/Pages/ListsGen.dart';
+import 'package:randomiser/TheDB.dart';
 
 class AddNewList extends StatefulWidget {
   @override
@@ -10,8 +10,9 @@ class AddNewList extends StatefulWidget {
 class _AddNewList extends State<AddNewList> {  
   final _newObj = new TextEditingController();
   final _nameOfList = new TextEditingController();
-  List<String> _list = new List();
-  Helper _helper = new Helper();
+  List<List_Of_Items> _list = new List();
+  final theDb = TheDB.instance;
+
   @override
   void dispose(){
     _newObj.dispose();
@@ -62,19 +63,19 @@ class _AddNewList extends State<AddNewList> {
             new RaisedButton(
               child: new Text("add new Item"),
               onPressed: (){
-                _list.add(_newObj.text);
+                _insert(_nameOfList.text, _newObj.text);
+                _list.add(new List_Of_Items(item: _newObj.text, name: _nameOfList.text));
                 _newObj.clear();
                 setState(() { });
               }
             ),
             new RaisedButton(
+              child: new Text("Ready"),
               onPressed: (){
-                _helper.addToList(List_Of_Items(_nameOfList.text, _list));
-                _nameOfList.clear();
-                setState(() {});
-                Navigator.pop(context);
+                _query();
+                //Navigator.pop(context);
               },
-              child: new Text("Ready")
+
             ),
             new Expanded(
               child: new ListView.builder(
@@ -82,8 +83,9 @@ class _AddNewList extends State<AddNewList> {
                 itemBuilder: (BuildContext context, int index){
                   final item  = _list[index];
                   return Dismissible(
-                    key: Key(item),
+                    key: Key(item.getItem()),
                     onDismissed: (direction){
+                      _deleteItem(item.getItem(), item.getName());
                       setState(() {
                         _list.removeAt(index);
                       });
@@ -91,7 +93,8 @@ class _AddNewList extends State<AddNewList> {
                     },
                     background: Container(color:Colors.red),
                     child: ListTile(
-                      title: new Text('$item'),
+                      title: new Text(item.getItem()),
+                      subtitle: new Text("Liste: " + item.getName() + " | ID: " + item.getID().toString()),
                     ),
                   );
                 }
@@ -102,5 +105,34 @@ class _AddNewList extends State<AddNewList> {
         ),
       )
     );
+  }
+
+
+  void _insert(String clName, String item) async {
+    // row to insert
+    Map<String, dynamic> row = {
+      TheDB.columnListName: clName,
+      TheDB.columnItem: item
+    };
+    final id = await theDb.insert(row);
+    print('inserted row id: $id');
+  }
+
+  void _query() async {
+    final allRows = await theDb.queryAllRows();
+    print('query all rows:');
+    allRows.forEach((row) => print(row.toString()));
+  }
+
+  void _deleteList(String listName) async {
+    final id = await theDb.queryRowCount();
+    final rowsDeleted = await theDb.deleteList(listName);
+    print('deleted $rowsDeleted row(s): row $id');
+  }
+
+  void _deleteItem(String itemName, String listName) async {
+    final id = await theDb.queryRowCount();
+    final rowsDeleted = await theDb.deleteItem(itemName, listName);
+    print('deleted $rowsDeleted row(s): row $id');
   }
 }
