@@ -4,23 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:randomiser/Models/List_Of_Items.dart';
 import '../TheDB.dart';
 import 'AddNewList.dart';
+import 'dart:math';
 
 class ListsGen extends StatefulWidget {
   @override
   _ListsGen createState() => _ListsGen();
 }
+
 class _ListsGen extends State<ListsGen> {
   final theDb = TheDB.instance;
   List<List_Of_Items> list = new List();
+  List<List_Of_Items> randList = new List();
+  var rng = new Random();
   @override
   void initState() {
-    Timer.run(() async{
-        List<List_Of_Items> lol = await theDb.queryGroupBy("name");
-        setState(() {
-          list = lol;
-        });
+    Timer.run(() async {
+      List<List_Of_Items> lol = await theDb.queryGroupBy("name");
+      setState(() {
+        list = lol;
+      });
     });
-    
+
     super.initState();
   }
 
@@ -28,43 +32,68 @@ class _ListsGen extends State<ListsGen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: new Center(
-        child: new ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (BuildContext context, int index){
-            final item = list[index];
-            return Dismissible(
+          child: new ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (BuildContext context, int index) {
+                final item = list[index];
+                return Dismissible(
                     key: Key(item.getName()),
-                    onDismissed: (direction){
+                    onDismissed: (direction) {
                       deleteList(item.getName());
                       setState(() {
                         list.removeAt(index);
                       });
-                      Scaffold.of(context).showSnackBar(SnackBar(content: Text(item.getName() + " deleted"),));
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text(item.getName() + " deleted"),
+                      ));
                     },
-                    background: Container(color:Colors.red),
-                    child: ListTile(
-                      title: new Text(item.getName()),
-                    ),
-                  );
-          }
-        )
-      ),
+                    background: Container(color: Colors.red),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        new Text(item.getName()),
+                        new IconButton(
+                            icon: new Icon(
+                              Icons.edit,
+                              color: Colors.green,
+                            ),
+                            onPressed: () {
+                              print("Edit was pressed");
+                            }),
+                        new IconButton(
+                            icon: new Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              deleteList(item.getName());
+                              setState(() {
+                                list.removeAt(index);
+                              });
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text(item.getName() + " deleted"),
+                              ));
+                            }),
+                        new RaisedButton(
+                            onPressed: () {
+                              showSimpleCustomDialog(context, item.getName());
+                              print("generate Button was clicked");
+                            },
+                            child: new Text("generate"))
+                      ],
+                    ));
+              })),
       floatingActionButton: new FloatingActionButton(
-        onPressed: (){
+        onPressed: () {
           print('I was pressed');
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context)=>AddNewList())
-          );
+              context, MaterialPageRoute(builder: (context) => AddNewList()));
         },
         tooltip: 'AddNewList',
-        child: new Icon(
-          Icons.add
-        ),
+        child: new Icon(Icons.add),
       ),
     );
   }
-
 
   void deleteList(String listName) async {
     final id = await theDb.queryRowCount();
@@ -72,14 +101,54 @@ class _ListsGen extends State<ListsGen> {
     print('deleted $rowsDeleted row(s): row $id');
   }
 
-  int numberOf(String listName, List<List_Of_Items> lis){
+  int numberOf(String listName, List<List_Of_Items> lis) {
     int counter = 0;
-    for(List_Of_Items ls in lis){
-      if(ls.getName() == listName){
+    for (List_Of_Items ls in lis) {
+      if (ls.getName() == listName) {
         counter++;
       }
     }
     return counter;
   }
 
+  void showSimpleCustomDialog(BuildContext context, String listName) async {
+    if (randList.isEmpty) {
+      randList = await theDb.queryWhere("$listName");
+    } else {
+      randList.clear();
+      randList = await theDb.queryWhere("$listName");
+    }
+    setState(() {});
+    showDialog(
+      context: context,
+      builder: (context) {
+        String contentText =
+            randList[0 + rng.nextInt(randList.length - 0)].getItem();
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("Random value of List: $listName"),
+              content: Text(contentText),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Cancel"),
+                ),
+                FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      contentText =
+                          randList[0 + rng.nextInt(randList.length - 0)]
+                              .getItem();
+                    });
+                  },
+                  child: Text("generate"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 }

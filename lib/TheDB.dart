@@ -73,6 +73,19 @@ class TheDB{
     });
   }
 
+  Future<List<List_Of_Items>> queryWhere(String columnName) async{
+    Database db = await instance.database;
+    final List<Map<String, dynamic>> maps = await db.rawQuery("SELECT * FROM $table WHERE $columnListName IS '$columnName'");
+    
+    return List.generate(maps.length, (index){
+      return List_Of_Items(
+        id: maps[index]['id'],
+        name: maps[index]['name'],
+        item: maps[index]['item'],
+      );
+    });
+  }
+
   Future<int> queryRowCount() async {
     Database db = await instance.database;
     return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $table'));
