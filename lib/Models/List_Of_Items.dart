@@ -1,25 +1,23 @@
-class List_Of_Items{
+class List_Of_Items {
   final int id;
   final String name;
-  final String item; 
+  final String item;
 
-  List_Of_Items(
-    {
-      this.id,
-      this.name,
-      this.item,
-    }
-  );
-  
-  String getName(){
+  List_Of_Items({
+    this.id,
+    this.name,
+    this.item,
+  });
+
+  String getName() {
     return this.name;
   }
 
-  String getItem(){
+  String getItem() {
     return this.item;
   }
 
-  int getID(){
+  int getID() {
     return this.id;
   }
 
@@ -32,8 +30,7 @@ class List_Of_Items{
   }
 
   @override
-  String toString(){
+  String toString() {
     return "The Id: $id, The List name: $name, The item name: $item";
   }
-
 }

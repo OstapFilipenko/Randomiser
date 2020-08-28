@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:randomiser/Models/List_Of_Items.dart';
+import 'package:randomiser/Pages/DispItemsOfList.dart';
 import '../TheDB.dart';
 import 'AddNewList.dart';
 import 'dart:math';
@@ -15,6 +16,7 @@ class _ListsGen extends State<ListsGen> {
   final theDb = TheDB.instance;
   List<List_Of_Items> list = new List();
   List<List_Of_Items> randList = new List();
+
   var rng = new Random();
   @override
   void initState() {
@@ -37,51 +39,35 @@ class _ListsGen extends State<ListsGen> {
               itemBuilder: (BuildContext context, int index) {
                 final item = list[index];
                 return Dismissible(
-                    key: Key(item.getName()),
-                    onDismissed: (direction) {
-                      deleteList(item.getName());
-                      setState(() {
-                        list.removeAt(index);
-                      });
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                        content: Text(item.getName() + " deleted"),
-                      ));
-                    },
-                    background: Container(color: Colors.red),
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        new Text(item.getName()),
-                        new IconButton(
-                            icon: new Icon(
-                              Icons.edit,
-                              color: Colors.green,
-                            ),
-                            onPressed: () {
-                              print("Edit was pressed");
-                            }),
-                        new IconButton(
-                            icon: new Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                            onPressed: () {
-                              deleteList(item.getName());
-                              setState(() {
-                                list.removeAt(index);
-                              });
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text(item.getName() + " deleted"),
-                              ));
-                            }),
-                        new RaisedButton(
-                            onPressed: () {
-                              showSimpleCustomDialog(context, item.getName());
-                              print("generate Button was clicked");
-                            },
-                            child: new Text("generate"))
-                      ],
+                  key: Key(item.getName()),
+                  onDismissed: (direction) {
+                    deleteList(item.getName());
+                    setState(() {
+                      list.removeAt(index);
+                    });
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text(item.getName() + " deleted"),
                     ));
+                  },
+                  background: Container(color: Colors.red),
+                  child: new ListTile(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DispItemsOfList(
+                                      list: item,
+                                    )));
+                      },
+                      title: new Text(item.getName()),
+                      trailing: new IconButton(
+                        icon: Icon(Icons.find_replace),
+                        onPressed: () {
+                          showSimpleCustomDialog(context, item.getName());
+                          print("generate Button was clicked");
+                        },
+                      )),
+                );
               })),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
@@ -142,7 +128,7 @@ class _ListsGen extends State<ListsGen> {
                               .getItem();
                     });
                   },
-                  child: Text("generate"),
+                  child: Text("get random"),
                 ),
               ],
             );
