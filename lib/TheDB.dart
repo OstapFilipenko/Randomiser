@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:randomiser/Models/List_Of_Items.dart';
 
-class TheDB{
+class TheDB {
   static final _databaseName = "RandomiserApp.db";
   static final _databaseVersion = 1;
   static final table = "Items";
@@ -23,14 +23,13 @@ class TheDB{
     _database = await _initDatabase();
     return _database;
   }
-  
+
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     return await openDatabase(path,
-        version: _databaseVersion,
-        onCreate: _onCreate);
-  } 
+        version: _databaseVersion, onCreate: _onCreate);
+  }
 
   Future _onCreate(Database db, int version) async {
     await db.execute('''
@@ -50,8 +49,8 @@ class TheDB{
   Future<List<List_Of_Items>> queryAllRows() async {
     Database db = await instance.database;
     final List<Map<String, dynamic>> maps = await db.query(table);
-    
-    return List.generate(maps.length, (index){
+
+    return List.generate(maps.length, (index) {
       return List_Of_Items(
         id: maps[index]['id'],
         name: maps[index]['name'],
@@ -60,11 +59,12 @@ class TheDB{
     });
   }
 
-  Future<List<List_Of_Items>> queryGroupBy(String columnName) async{
+  Future<List<List_Of_Items>> queryGroupBy(String columnName) async {
     Database db = await instance.database;
-    final List<Map<String, dynamic>> maps = await db.rawQuery("SELECT * FROM $table GROUP BY $columnName");
-    
-    return List.generate(maps.length, (index){
+    final List<Map<String, dynamic>> maps =
+        await db.rawQuery("SELECT * FROM $table GROUP BY $columnName");
+
+    return List.generate(maps.length, (index) {
       return List_Of_Items(
         id: maps[index]['id'],
         name: maps[index]['name'],
@@ -73,11 +73,12 @@ class TheDB{
     });
   }
 
-  Future<List<List_Of_Items>> queryWhere(String columnName) async{
+  Future<List<List_Of_Items>> queryWhere(String columnName) async {
     Database db = await instance.database;
-    final List<Map<String, dynamic>> maps = await db.rawQuery("SELECT * FROM $table WHERE $columnListName IS '$columnName'");
-    
-    return List.generate(maps.length, (index){
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+        "SELECT * FROM $table WHERE $columnListName IS '$columnName'");
+
+    return List.generate(maps.length, (index) {
       return List_Of_Items(
         id: maps[index]['id'],
         name: maps[index]['name'],
@@ -88,19 +89,21 @@ class TheDB{
 
   Future<int> queryRowCount() async {
     Database db = await instance.database;
-    return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $table'));
+    return Sqflite.firstIntValue(
+        await db.rawQuery('SELECT COUNT(*) FROM $table'));
   }
 
   Future<int> deleteList(String listName) async {
     Database db = await instance.database;
-    return await db.delete(table, where: '$columnListName = ?', whereArgs: [listName]);
-
+    return await db
+        .delete(table, where: '$columnListName = ?', whereArgs: [listName]);
   }
 
   Future<int> deleteItem(String itemName, String listName) async {
     Database db = await instance.database;
-    return await db.rawDelete("DELETE FROM $table WHERE $columnListName = ? AND $columnItem = ?", [listName, itemName]);
+    return await db.rawDelete(
+        "DELETE FROM $table WHERE $columnListName = ? AND $columnItem = ?",
+        [listName, itemName]);
     //return await db.delete(table, where: '$columnItem = ?, $columnListName = ?', whereArgs: [itemName, listName]);
   }
-
 }
