@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:iso_countries/iso_countries.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/foundation.dart';
 
 class CountriesGen extends StatefulWidget {
   @override
@@ -20,8 +17,6 @@ class _CountriesGen extends State<CountriesGen> {
   int numb = 1;
   int oldnum;
   var rng = new Random();
-  var url = 'https://en.wikipedia.org/wiki/albania';
-
   void initState() {
     super.initState();
     prepareDefaultCountries();
@@ -61,29 +56,11 @@ class _CountriesGen extends State<CountriesGen> {
                             child: new Text("generate"),
                             onPressed: () {
                               randomNumb(1, countryList.length);
-                              setState(() {
-                                url = 'https://en.wikipedia.org/wiki/' +
-                                    countryList[numb].name;
-                                controller.loadUrl(url);
-                              });
                             })
                       ],
                     ),
                   ),
                 ),
-                new Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: new WebView(
-                    initialUrl: url,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    onWebViewCreated: (WebViewController webViewController) {
-                      controller = webViewController;
-                    },
-                    gestureRecognizers: Set()
-                      ..add(Factory<VerticalDragGestureRecognizer>(
-                          () => VerticalDragGestureRecognizer())),
-                  ),
-                )
               ],
             )
           : new CircularProgressIndicator(),
