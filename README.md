@@ -1,4 +1,4 @@
-[:computer: My personal website](ostapfilipenko.com) | [:paperclip: LinkedIn](https://www.linkedin.com/in/ostap-filipenko-7b7945165/)
+[:computer: My personal website](https://www.ostapfilipenko.com) | [:paperclip: LinkedIn](https://www.linkedin.com/in/ostap-filipenko-7b7945165/)
 # Randomiser
 Randomiser is an app to get random numbers, colors, values of self made lists, dice numbers and countries with their most important information.
 
