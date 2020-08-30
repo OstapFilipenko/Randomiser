@@ -16,6 +16,13 @@ class DispItemsOfList extends StatefulWidget {
 class _DispItemsOfListState extends State<DispItemsOfList> {
   List<List_Of_Items> items = new List();
   final theDb = TheDB.instance;
+  final itemcontroller = TextEditingController();
+
+  @override
+  void dispose() {
+    itemcontroller.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -64,6 +71,63 @@ class _DispItemsOfListState extends State<DispItemsOfList> {
                       ),
                     );
                   })),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {
+          print('I was pressed');
+          addItemDialog();
+        },
+        tooltip: 'Add new item to list',
+        child: new Icon(Icons.add),
+      ),
     );
+  }
+
+  void addItemDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text("Add new item"),
+              content: new TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text!';
+                  }
+                  return null;
+                },
+                controller: itemcontroller,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Item',
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Close me!'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('Add'),
+                  onPressed: () {
+                    _insert(itemcontroller.text);
+                    setState(() {});
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ));
+  }
+
+  void _insert(String item) async {
+    Map<String, dynamic> row = {
+      TheDB.columnListName: widget.list.getName(),
+      TheDB.columnItem: item
+    };
+    final id = await theDb.insert(row);
+    setState(() {
+      items.add(
+          new List_Of_Items(id: id, item: item, name: widget.list.getName()));
+    });
   }
 }

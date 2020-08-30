@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:randomiser/Models/List_Of_Items.dart';
-import 'package:randomiser/Pages/ListsGen.dart';
 import 'package:randomiser/TheDB.dart';
 
 class AddNewList extends StatefulWidget {

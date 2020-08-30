@@ -75,7 +75,7 @@ class _ListsGen extends State<ListsGen> {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AddNewList()));
         },
-        tooltip: 'AddNewList',
+        tooltip: 'Add new list',
         child: new Icon(Icons.add),
       ),
     );
@@ -128,7 +128,7 @@ class _ListsGen extends State<ListsGen> {
                               .getItem();
                     });
                   },
-                  child: Text("get random"),
+                  child: Text("Get random"),
                 ),
               ],
             );
