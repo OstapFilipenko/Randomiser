@@ -16,6 +16,13 @@ class _ListsGen extends State<ListsGen> {
   final theDb = TheDB.instance;
   List<List_Of_Items> list = new List();
   List<List_Of_Items> randList = new List();
+  final listController = TextEditingController();
+
+  @override
+  void dispose() {
+    listController.dispose();
+    super.dispose();
+  }
 
   var rng = new Random();
   @override
@@ -64,16 +71,13 @@ class _ListsGen extends State<ListsGen> {
                         icon: Icon(Icons.find_replace),
                         onPressed: () {
                           showSimpleCustomDialog(context, item.getName());
-                          print("generate Button was clicked");
                         },
                       )),
                 );
               })),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
-          print('I was pressed');
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddNewList()));
+          enterListNameDialog();
         },
         tooltip: 'Add new list',
         child: new Icon(Icons.add),
@@ -136,5 +140,45 @@ class _ListsGen extends State<ListsGen> {
         );
       },
     );
+  }
+
+  void enterListNameDialog() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text("Add new list"),
+              content: new TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text!';
+                  }
+                  return null;
+                },
+                controller: listController,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'listname',
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Close me!'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('Add'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                AddNewList(listname: listController.text)));
+                  },
+                ),
+              ],
+            ));
   }
 }
