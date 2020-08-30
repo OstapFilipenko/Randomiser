@@ -38,7 +38,13 @@ class _NumbersGen extends State<NumbersGen> {
               children: <Widget>[
                 new Container(
                   width: 100,
-                  child: new TextField(
+                  child: new TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "Please enter a number";
+                      }
+                      return null;
+                    },
                     controller: _minValueController,
                     decoration: new InputDecoration(
                       labelText: "Min",
@@ -57,7 +63,13 @@ class _NumbersGen extends State<NumbersGen> {
                 ),
                 new Container(
                   width: 100,
-                  child: new TextField(
+                  child: new TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "Please enter a number";
+                      }
+                      return null;
+                    },
                     controller: _maxValueController,
                     decoration: new InputDecoration(
                       labelText: "Max",
