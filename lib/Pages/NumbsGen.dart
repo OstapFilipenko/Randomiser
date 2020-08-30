@@ -6,18 +6,19 @@ class NumbersGen extends StatefulWidget {
   @override
   _NumbersGen createState() => _NumbersGen();
 }
-class _NumbersGen extends State<NumbersGen> {  
+
+class _NumbersGen extends State<NumbersGen> {
   int _numb = 0;
   var rng = new Random();
   final _minValueController = new TextEditingController();
   final _maxValueController = new TextEditingController();
-  
+
   void _randomNumb(var min, var max) {
     setState(() {
       _numb = min + rng.nextInt(max - min);
     });
   }
-  
+
   @override
   void dispose() {
     _minValueController.dispose();
@@ -25,58 +26,83 @@ class _NumbersGen extends State<NumbersGen> {
     super.dispose();
   }
 
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Row(
+      body: Column(
+        children: <Widget>[
+          new Container(
+            margin: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 20.0),
+            child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 new Container(
-                    width: 100,
-                    child: new TextField(  
-                      controller: _minValueController,
-                      decoration: new InputDecoration.collapsed(
-                        hintText: "Min"
+                  width: 100,
+                  child: new TextField(
+                    controller: _minValueController,
+                    decoration: new InputDecoration(
+                      labelText: "Min",
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(),
                       ),
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                     ),
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
                   ),
-                 new Container(
-                    width: 100,
-                    child: new TextField(  
-                      controller: _maxValueController,
-                     decoration: new InputDecoration.collapsed(
-                        hintText: "Max"
+                ),
+                new Container(
+                  width: 100,
+                  child: new TextField(
+                    controller: _maxValueController,
+                    decoration: new InputDecoration(
+                      labelText: "Max",
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(),
                       ),
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                     ),
-                  )
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                  ),
+                )
               ],
             ),
-            new Text(
-              'Your random number is:',
-            ),
-            new Text(
-              '$_numb',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            new RaisedButton(
+          ),
+          new Text(
+            'Your random number is:',
+            style: new TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue),
+          ),
+          new Text(
+            '$_numb',
+            style: new TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue),
+          ),
+          new RaisedButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: const Text("generate"),
-              onPressed: (){
-                _randomNumb(int.parse(_minValueController.text), int.parse(_maxValueController.text)+1);
-              }
-            )
-          ],
-        ),
+              onPressed: () {
+                _randomNumb(int.parse(_minValueController.text),
+                    int.parse(_maxValueController.text) + 1);
+              })
+        ],
       ),
     );
   }

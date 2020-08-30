@@ -41,7 +41,10 @@ class _ListsGen extends State<ListsGen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: new Center(
-          child: new ListView.builder(
+          child: new ListView.separated(
+              separatorBuilder: (context, index) {
+                return new Divider();
+              },
               itemCount: list.length,
               itemBuilder: (BuildContext context, int index) {
                 final item = list[index];

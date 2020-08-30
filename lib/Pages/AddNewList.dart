@@ -84,7 +84,10 @@ class _AddNewList extends State<AddNewList> {
                     color: Colors.blue),
               ),
               new Expanded(
-                  child: new ListView.builder(
+                  child: new ListView.separated(
+                      separatorBuilder: (context, index) {
+                        return new Divider();
+                      },
                       itemCount: _list.length,
                       itemBuilder: (BuildContext context, int index) {
                         final item = _list[index];

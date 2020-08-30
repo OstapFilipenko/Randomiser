@@ -50,7 +50,10 @@ class _DispItemsOfListState extends State<DispItemsOfList> {
       body: items.isEmpty
           ? CircularProgressIndicator()
           : Center(
-              child: new ListView.builder(
+              child: new ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return new Divider();
+                  },
                   itemCount: items.length,
                   itemBuilder: (BuildContext context, int index) {
                     final item = items[index];

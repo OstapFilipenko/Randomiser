@@ -45,18 +45,37 @@ class _CountriesGen extends State<CountriesGen> {
               scrollDirection: Axis.vertical,
               children: [
                 new Card(
+                  elevation: 50,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  shadowColor: Colors.black,
                   color: Colors.white,
                   child: new Container(
                     padding: EdgeInsets.all(20.0),
                     child: new Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        new Text(countryList[numb].name),
-                        new RaisedButton(
-                            child: new Text("generate"),
-                            onPressed: () {
-                              randomNumb(1, countryList.length);
-                            })
+                        new Text(
+                          countryList[numb].name,
+                          style: new TextStyle(
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue),
+                        ),
+                        new Container(
+                          margin: EdgeInsets.only(top: 20.0),
+                          child: new RaisedButton(
+                              color: Colors.blue,
+                              textColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: new Text("generate"),
+                              onPressed: () {
+                                randomNumb(1, countryList.length);
+                              }),
+                        ),
                       ],
                     ),
                   ),
