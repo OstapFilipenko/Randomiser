@@ -1,16 +1,15 @@
-# randomiser
+[:computer: My personal website](https://www.ostapfilipenko.com) | [:paperclip: LinkedIn](https://www.linkedin.com/in/ostap-filipenko-7b7945165/)
+# Randomiser
+Randomiser is an app to get random numbers, colors, values of self made lists, dice numbers and countries with their most important information.
 
-A new Flutter project.
+## Support
+Randomiser is currently supported on the following platforms:
 
-## Getting Started
+| Platform | Support |
+| ------ | ------ |
+| Android | YES |
+| IOS | YES |
 
-This project is a starting point for a Flutter application.
+## Some Screenshots
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="https://github.com/OstapFilipenko/Randomiser/blob/master/assets/img/number.jpg" width="35%">  <img src="https://github.com/OstapFilipenko/Randomiser/blob/master/assets/img/color.jpg" width="35%">  <img src="https://github.com/OstapFilipenko/Randomiser/blob/master/assets/img/lists.jpg" width="35%">  <img src="https://github.com/OstapFilipenko/Randomiser/blob/master/assets/img/list%20items.jpg" width="35%">  <img src="https://github.com/OstapFilipenko/Randomiser/blob/master/assets/img/add%20new%20item.jpg" width="35%">  <img src="https://github.com/OstapFilipenko/Randomiser/blob/master/assets/img/random%20value%20of%20a%20list.jpg" width="35%">  <img src="https://github.com/OstapFilipenko/Randomiser/blob/master/assets/img/dices.jpg" width="35%">  <img src="https://github.com/OstapFilipenko/Randomiser/blob/master/assets/img/countries.jpg" width="35%">
