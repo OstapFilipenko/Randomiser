@@ -10,8 +10,8 @@
 .svn/
 
 #ios and android folder
-android/
-ios/
+/android/
+/ios/
 
 
 # IntelliJ related
