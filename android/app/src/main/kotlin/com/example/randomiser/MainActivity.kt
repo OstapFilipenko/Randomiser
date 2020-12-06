@@ -1,4 +1,4 @@
-package com.example.randomiser
+package at.filipenko.randomiser
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -13,6 +13,7 @@
 /android/
 /ios/
 /android/key.properties
+/*.jsk
 
 
 # IntelliJ related
