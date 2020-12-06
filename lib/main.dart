@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Randomiser',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -41,14 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
     CountriesGen()
   ];
 
- 
-
-  void onTappedMenu(int index){
+  void onTappedMenu(int index) {
     setState(() {
       _currentIndex = index;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
         iconSize: 30,
         onTap: onTappedMenu,
         currentIndex: _currentIndex,
-        
         items: [
           new BottomNavigationBarItem(
             icon: Icon(Icons.plus_one),
