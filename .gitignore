@@ -9,6 +9,10 @@
 .history
 .svn/
 
+#ios and android folder
+adnroid/
+ios/
+
 # IntelliJ related
 *.iml
 *.ipr
