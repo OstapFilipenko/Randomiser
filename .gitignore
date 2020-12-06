@@ -10,8 +10,9 @@
 .svn/
 
 #ios and android folder
-adnroid/
+android/
 ios/
+
 
 # IntelliJ related
 *.iml
